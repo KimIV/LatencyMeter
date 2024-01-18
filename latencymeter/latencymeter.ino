@@ -1,8 +1,23 @@
-#define F_CPU 16000000UL // частота работы микроконтроллера
+#define F_CPU 16000000UL  // частота работы микроконтроллера
+#define PIN_BUTTON 10     // Кнопка
 
-#define PIN_BUTTON 10
+// LOCATION_LED5461AS определяет взаимное расположение Led 5461AS и Arduino Nano
+// при двухэтажной компоновке:
+//  0 - оригинальная компоновка автора проекта https://github.com/githubniko/LatencyMeter
+//      Смотри схему Schematic_Latencycam_2023-11-22.pdf
+//  1 - Led 5461AS сдвинут на два контакта в сторону от miniUSB относительно оригинала.
+//      Смотри схему Schematic_LatencyMeter_Loc1_2024-01-18.pdf
+//  2 - Led 5461AS перевёрнут на 180 градусов относительно оригинала.
+//      Смотри схему Schematic_LatencyMeter_Loc2_2024-01-18.pdf
+#define LOCATION_LED5461AS 2
 
+#if (LOCATION_LED5461AS == 0)
 #include "Led_5461AS.h"
+#elif (LOCATION_LED5461AS == 1)
+#include "Led_5461AS_2.h"
+#else
+#include "Led_5461AS_180.h"
+#endif
 #include "Button.h"
 #include "LatencyMeter.h"
 

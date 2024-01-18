@@ -1,5 +1,9 @@
-#define PIN_IN 7
-#define PIN_OUT 3
+#define PIN_IN 7  // Фоторезистор на A7
+#if (LOCATION_LED5461AS == 1)
+#define PIN_OUT 8 // Светодиод на D8
+#else
+#define PIN_OUT 3 // Светодиод на D3
+#endif
 
 #include "include/AbstractEventHandler.h"
 

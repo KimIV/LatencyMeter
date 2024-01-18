@@ -1,17 +1,17 @@
 #pragma once
 
-#define A PORTC1    // A1
-#define B PORTC5    // A5
-#define C PORTD6    // D6
-#define D PORTB0    // D8
-#define E PORTB1    // D9
-#define F PORTC2    // A2
-#define G PORTD5    // D5
-#define DP PORTD7   // D7
-#define DIG1 PORTC0 // A0
-#define DIG2 PORTC3 // A3
-#define DIG3 PORTC4 // A4
-#define DIG4 PORTD4 // D4
+#define A PORTC3    // A3
+#define B PORTC0    // A0
+#define C PORTD4    // D4
+#define D PORTD6    // D6
+#define E PORTD7    // D7
+#define F PORTC4    // A4
+#define G PORTD3    // D3
+#define DP PORTD5   // D5
+#define DIG1 PORTC2 // A2
+#define DIG2 PORTC5 // A5
+#define DIG3 PORTC1 // A1
+#define DIG4 PORTD2 // D2
 
 #include <math.h>
 
@@ -33,9 +33,8 @@ public:
         Length = strlen(value);
 
         // Устанавливаю порты на выход
-        DDRB = DDRB | B00011;
         DDRC = DDRC | B00111111;
-        DDRD = DDRD | B11110000;
+        DDRD = DDRD | B11111100;
 
         // Таймер обновления индикации
         cli(); // отключить глобальные прерывания
@@ -121,86 +120,74 @@ private:
             PORTD = PORTD | (1 << C);
             break;
         case '2':
-            PORTB = PORTB | (1 << D) | (1 << E);
             PORTC = PORTC | (1 << A) | (1 << B);
-            PORTD = PORTD | (1 << G);
+            PORTD = PORTD | (1 << D) | (1 << E) | (1 << G);
             break;
         case '3':
-            PORTB = PORTB | (1 << D);
             PORTC = PORTC | (1 << A) | (1 << B);
-            PORTD = PORTD | (1 << C) | (1 << G);
+            PORTD = PORTD | (1 << C) | (1 << D) | (1 << G);
             break;
         case '4':
             PORTC = PORTC | (1 << B) | (1 << F);
             PORTD = PORTD | (1 << C) | (1 << G);
             break;
         case '5':
-            PORTB = PORTB | (1 << D);
             PORTC = PORTC | (1 << A) | (1 << F);
-            PORTD = PORTD | (1 << C) | (1 << G);
+            PORTD = PORTD | (1 << C) | (1 << D) | (1 << G);
             break;
         case '6':
-            PORTB = PORTB | (1 << D) | (1 << E);
             PORTC = PORTC | (1 << A) | (1 << F);
-            PORTD = PORTD | (1 << C) | (1 << G);
+            PORTD = PORTD | (1 << C) | (1 << D) | (1 << E) | (1 << G);
             break;
         case '7':
             PORTC = PORTC | (1 << A) | (1 << B);
             PORTD = PORTD | (1 << C);
             break;
         case '8':
-            PORTB = PORTB | (1 << D) | (1 << E);
             PORTC = PORTC | (1 << A) | (1 << B) | (1 << F);
-            PORTD = PORTD | (1 << C) | (1 << G);
+            PORTD = PORTD | (1 << C) | (1 << D) | (1 << E) | (1 << G);
             break;
         case '9':
-            PORTB = PORTB | (1 << D);
             PORTC = PORTC | (1 << A) | (1 << B) | (1 << F);
-            PORTD = PORTD | (1 << C) | (1 << G);
+            PORTD = PORTD | (1 << C) | (1 << D) | (1 << G);
             break;
         case '0':
-            PORTB = PORTB | (1 << D) | (1 << E);
             PORTC = PORTC | (1 << A) | (1 << B) | (1 << F);
-            PORTD = PORTD | (1 << C);
+            PORTD = PORTD | (1 << C) | (1 << D) | (1 << E);
             break;
         case 'H':
-            PORTB = PORTB | (1 << E);
             PORTC = PORTC | (1 << B) | (1 << F);
-            PORTD = PORTD | (1 << C) | (1 << G);
+            PORTD = PORTD | (1 << C) | (1 << E) | (1 << G);
             break;
         case 'h':
-            PORTB = PORTB | (1 << E);
             PORTC = PORTC | (1 << F);
-            PORTD = PORTD | (1 << C) | (1 << G);
+            PORTD = PORTD | (1 << C) | (1 << E) | (1 << G);
             break;
         case 'L':
-            PORTB = PORTB | (1 << D) | (1 << E);
             PORTC = PORTC | (1 << F);
+            PORTD = PORTD | (1 << D) | (1 << E);
             break;
         case 'l':
-            PORTB = PORTB | (1 << E);
             PORTC = PORTC | (1 << F);
+            PORTD = PORTD | (1 << E);
             break;
         case ' ':
-            PORTB = PORTB & ~(1 << D) & ~(1 << E);
             PORTC = PORTC & ~(1 << A) & ~(1 << B) & ~(1 << F);
-            PORTD = PORTD & ~(1 << C) & ~(1 << G) & ~(1 << DP);
+            PORTD = PORTD & ~(1 << C) & ~(1 << D) & ~(1 << E) & ~(1 << G) & ~(1 << DP);
             break;
         case '-':
             PORTD = PORTD | (1 << G);
             break;
         case 'U':
         case 'u':
-            PORTB = PORTB | (1 << D) | (1 << E);
             PORTC = PORTC | (1 << B) | (1 << F);
-            PORTD = PORTD | (1 << C);
+            PORTD = PORTD | (1 << C) | (1 << D) | (1 << E);
             break;
         case '^':
             PORTC = PORTC | (1 << A) | (1 << F);
             break;
         case 'n':
-            PORTB = PORTB | (1 << E);
-            PORTD = PORTD | (1 << C) | (1 << G);
+            PORTD = PORTD | (1 << C) | (1 << E) | (1 << G);
             break;
         default:
             break;
@@ -212,9 +199,8 @@ private:
     /// @brief Сбрасывает значения цифры
     static void DigitOff()
     {
-        PORTB = PORTB & ~(1 << D) & ~(1 << E);
         PORTC = PORTC & ~(1 << A) & ~(1 << B) & ~(1 << F);
-        PORTD = PORTD & ~(1 << C) & ~(1 << G) & ~(1 << DP);
+        PORTD = PORTD & ~(1 << C) & ~(1 << D) & ~(1 << E) & ~(1 << G) & ~(1 << DP);
     }
     /// @brief Выключает все разряды
     static void TurnOff()
