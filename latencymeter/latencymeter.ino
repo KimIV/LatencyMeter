@@ -9,7 +9,7 @@
 //      Смотри схему Schematic_LatencyMeter_Loc1_2024-01-18.pdf
 //  2 - Led 5461AS перевёрнут на 180 градусов относительно оригинала.
 //      Смотри схему Schematic_LatencyMeter_Loc2_2024-01-18.pdf
-#define LOCATION_LED5461AS 0
+#define LOCATION_LED5461AS 1
 
 #if (LOCATION_LED5461AS == 0)
 #include "Led_5461AS.h"

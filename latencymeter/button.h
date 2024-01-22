@@ -36,7 +36,7 @@ public:
         _flagEvent = false; 
         return;
       }
-      if (time >= 30 && !_flagEvent) // Одинарно нажатие
+      if (time >= 150 && !_flagEvent) // Одинарно нажатие, защита от дребезга
       {
         onKeyUp();
         onClick();
