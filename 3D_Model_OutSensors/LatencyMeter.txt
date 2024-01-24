@@ -1,4 +1,4 @@
-Корпус для LatencyMeter
+Параметры печати. Корпус для LatencyMeter.
 
 Профиль: Standard Quality 0.2mm UNID PETG Black 0.4mm Nozzle
 Высота слоя: 0,2 мм
