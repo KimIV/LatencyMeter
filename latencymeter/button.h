@@ -22,8 +22,6 @@ public:
   {
     bool btnState = !digitalRead(_pin);
 
-    
-
     if (!btnState && _flag) // кнопка отпущена
     {
       uint32_t time = millis() - _timer;
