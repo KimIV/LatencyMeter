@@ -34,7 +34,6 @@ public:
     void Start()
     {
         Serial.println("Start");
-        startVoltage = 0;
         medianTime = 0;
         minTime = 0;
         maxTime = 0;
@@ -45,13 +44,11 @@ public:
 
         onUpdate();
         minTime = 32767;
-        digitalWrite(PIN_OUT, LOW);
-        delay(500);
-        startVoltage = getVoltage() + 0.05f; // / 2;
-//        delay(2000);
+        digitalWrite(PIN_OUT, LOW); // Выкл. светодиод
+        delay(250);
+        startVoltage = getVoltage() + 0.5f;
         _flagStatus = true;
 
-        digitalWrite(PIN_OUT, LOW); // Выкл. светодиод
     }
     void Stop() { _flagStatus = false; }
     void Restart()
@@ -80,7 +77,7 @@ public:
         else
         {
             float voltage = getVoltage();
-            if (voltage > startVoltage + 0.5f)
+            if (voltage > startVoltage)
             { // Если сигнал поступил, то
                 count++;
                 valueTime = (micros() - _timer) / 1000; // Считаем задержку
