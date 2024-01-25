@@ -1,5 +1,19 @@
 #include "include/AbstractEventHandler.h"
 
+// Тайминги работы кнопки в миллисекундах
+#ifndef Button_deBounce
+#define Button_deBounce 15
+#endif
+#ifndef Button_hold
+#define Button_hold 500
+#endif
+//#ifndef Button_long
+//#define Button_long 5000
+//#endif
+//#ifndef Button_idle
+//#define Button_idle 10000
+//#endif
+
 class Button
 {
 
@@ -22,19 +36,19 @@ public:
   {
     bool btnState = !digitalRead(_pin);
 
-    if (!btnState && _flag) // кнопка отпущена
+    if (!btnState && _flag) // Кнопка отпущена
     {
       uint32_t time = millis() - _timer;
 
-      if (time >= 500) // Отпускание после долгого нажания
+      if (_flagEvent) // Отпускание после долгого нажатия
       {
         onKeyUp();
         onClickLongDown();
-        _flag = false; 
-        _flagEvent = false; 
+        _flag = false;
+        _flagEvent = false;
         return;
       }
-      if (time >= 150 && !_flagEvent) // Одинарно нажатие, защита от дребезга
+      if (time > Button_deBounce && !_flagEvent)	// Клик
       {
         onKeyUp();
         onClick();
@@ -44,23 +58,22 @@ public:
       }
     }
 
-    if(btnState && _flag) // Удерживание кнопки
+    if(btnState && _flag)	// Удерживание кнопки
     {
       uint32_t time = millis() - _timer;
-      if (time >= 500)
+      if (time > Button_hold)
       {
         if(_flagEvent)
           onClickLongPulse();
-        else 
+        else
           onClickLong();
 
         _flagEvent = true;
-        _timer = millis();       
         return;
       }
     }
 
-    if (btnState && !_flag && !_flagEvent) // Нажатие кнопки
+    if (btnState && !_flag && !_flagEvent)	// Нажатие кнопки
     {
       onKeyDown();
       _flag = true;
@@ -71,6 +84,6 @@ public:
 private:
   byte _pin;
   uint32_t _timer = 0;
-  bool _flag = false; // флаг кнопка нажата
-  bool _flagEvent = false; // флаг Произошло событие, ждать исходное состояние кнопки
+  bool _flag = false;		// флаг Кнопка нажата
+  bool _flagEvent = false;	// флаг Произошло событие, ждать исходное состояние кнопки
 };

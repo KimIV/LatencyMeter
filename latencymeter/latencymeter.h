@@ -9,18 +9,18 @@
 
 class LatencyMeter
 {
-    uint32_t _timer = 0;         // Переменная таймера
+	uint32_t _timer = 0;         // Переменная таймера
     bool _flagMeasuring = false; // когда true, то идет процесс измерения
     bool _flagStatus = false;    // Управляет запуском/остановкой процесса измерения
     List<uint16_t> _listValue;   // массив измерений
 
 public:
     float startVoltage = 0;
-    uint16_t medianTime = 0; // Медиана значений
+    uint16_t medianTime = 0;  // Медиана значений
     uint16_t minTime = 0;
     uint16_t maxTime = 0;
     uint16_t valueTime = 0;
-    uint16_t count = 0; // Кол-во измерений
+    uint16_t count = 0;       // Кол-во измерений
 
     TEvent<> onUpdate;
 
@@ -46,9 +46,9 @@ public:
         onUpdate();
         minTime = 32767;
         digitalWrite(PIN_OUT, LOW);
-        delay(1000);
+        delay(500);
         startVoltage = getVoltage() + 0.05f; // / 2;
-        // delay(2000);
+//        delay(2000);
         _flagStatus = true;
 
         digitalWrite(PIN_OUT, LOW); // Выкл. светодиод
