@@ -60,8 +60,7 @@ public:
     /// @brief Выполняет измерение
     void Execute()
     {
-        if (!_flagStatus)
-            return;
+        if (!_flagStatus) return;
 
         if (!_flagMeasuring)
         {

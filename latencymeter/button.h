@@ -65,7 +65,7 @@ public:
         _flag = false;
         return;
       }
-      if (_flagHold) // Отпускание после долгого нажатия
+      if (_flagHold) // Отпускание после короткого удержания
       {
         onClickHold();
         _flag = false;
