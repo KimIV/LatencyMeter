@@ -13,6 +13,12 @@
 
 class Button
 {
+private:
+  byte _pin;
+  uint32_t _timer = 0;
+  bool _flag = false;    // флаг Кнопка нажата
+  bool _flagHold = false; // флаг Произошло событие - удерживание кнопки
+  bool _flagLong = false; // флаг Произошло событие - долгое удерживание кнопки
 
 public:
   TEvent<> onClick;
@@ -32,23 +38,24 @@ public:
   void Execute()
   {
     bool btnState = !digitalRead(_pin);
+    uint32_t times = millis() - _timer;
 
-    if (btnState && !_flag && !_flagHold && !_flagLong)	// Нажатие кнопки
+    if (btnState && !_flag && times > Button_deBounce && !_flagHold && !_flagLong)  // Нажатие кнопки
     {
       onKeyDown();
       _flag = true;
       _timer = millis();
     }
 
-    if(btnState && _flag)	// Удерживание кнопки
+    if(btnState && _flag) // Удерживание кнопки
     {
-      uint32_t time = millis() - _timer;
+      times = millis() - _timer;
 
-      if (time > Button_hold && !_flagHold && !_flagLong)
+      if (times > Button_hold && !_flagHold && !_flagLong)
       {
         _flagHold = true;
       }
-      if (time > Button_long && !_flagLong)
+      if (times > Button_long && !_flagLong)
       {
         _flagHold = false;
         _flagLong = true;
@@ -57,9 +64,10 @@ public:
 
     if (!btnState && _flag) // Кнопка отпущена
     {
-      uint32_t time = millis() - _timer;
+      times = millis() - _timer;
+      _timer = millis();
 
-      if (time > Button_deBounce && !_flagHold && !_flagLong)  // Клик
+      if (times > Button_deBounce && !_flagHold && !_flagLong)  // Клик
       {
         onClick();
         _flag = false;
@@ -81,11 +89,4 @@ public:
       }
     }
   }
-
-private:
-  byte _pin;
-  uint32_t _timer = 0;
-  bool _flag = false;		// флаг Кнопка нажата
-  bool _flagHold = false;	// флаг Произошло событие - удерживание кнопки
-  bool _flagLong = false;	// флаг Произошло событие - долгое удерживание кнопки
 };
