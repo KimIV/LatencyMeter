@@ -54,11 +54,13 @@ public:
       if (times > Button_hold && !_flagHold && !_flagLong)
       {
         _flagHold = true;
+        _flagClear = true;
       }
       if (times > Button_long && !_flagLong)
       {
         _flagHold = false;
         _flagLong = true;
+        _flagClear = false;
       }
     }
 

@@ -18,8 +18,9 @@
 #else
 #include "Led_5461AS_180.h"
 #endif
-#include "Button.h"
+
 bool _flagClear = false;    // Для мигания в режиме Стоп измерения.
+#include "Button.h"
 #include "LatencyMeter.h"
 
 Led_5461AS *led;
