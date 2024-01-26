@@ -2,13 +2,13 @@
 
 // Тайминги работы кнопки в миллисекундах
 #ifndef Button_deBounce
-#define Button_deBounce 25
+#define Button_deBounce 25  // Защита от дребезга контактов
 #endif
 #ifndef Button_hold
-#define Button_hold 500
+#define Button_hold 300     // Время короткого удержания
 #endif
 #ifndef Button_long
-#define Button_long 1500
+#define Button_long 1500    // Время долгого удержания
 #endif
 
 class Button
