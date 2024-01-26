@@ -90,8 +90,8 @@ void setup()
   latencyMeter->onUpdate += METHOD_HANDLER(eventHandler, EventHandler::OnUpdateData);
 
   button1.onClick += METHOD_HANDLER(eventHandler, EventHandler::OnBtnClick);
-  button1.onClickLong += METHOD_HANDLER(eventHandler, EventHandler::OnBtnLongClick);
-  button1.onClickLongDown += METHOD_HANDLER(eventHandler, EventHandler::OnBtnReset);
+  button1.onClickHold += METHOD_HANDLER(eventHandler, EventHandler::OnBtnLongClick);
+  button1.onClickLong += METHOD_HANDLER(eventHandler, EventHandler::OnBtnReset);
 }
 
 void loop()

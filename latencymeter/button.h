@@ -16,8 +16,8 @@ class Button
 
 public:
   TEvent<> onClick;
+  TEvent<> onClickHold;
   TEvent<> onClickLong;
-  TEvent<> onClickLongDown;
   TEvent<> onKeyDown;
   TEvent<> onKeyUp;
 
@@ -33,7 +33,7 @@ public:
   {
     bool btnState = !digitalRead(_pin);
 
-    if (btnState && !_flag && !_flagHold)	// Нажатие кнопки
+    if (btnState && !_flag && !_flagHold && !_flagLong)	// Нажатие кнопки
     {
       onKeyDown();
       _flag = true;
@@ -67,14 +67,14 @@ public:
       }
       if (_flagHold) // Отпускание после долгого нажатия
       {
-        onClickLong();
+        onClickHold();
         _flag = false;
         _flagHold = false;
         return;
       }
       if (_flagLong) // Отпускание после долгого удержания
       {
-        onClickLongDown();
+        onClickLong();
         _flag = false;
         _flagLong = false;
         return;
