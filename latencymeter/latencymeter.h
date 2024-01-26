@@ -9,12 +9,12 @@
 
 class LatencyMeter
 {
-	uint32_t _timer = 0;         // Переменная таймера
+    uint32_t _timer = 0;         // Переменная таймера
     bool _flagMeasuring = false; // когда true, то идет процесс измерения
-    bool _flagStatus = false;    // Управляет запуском/остановкой процесса измерения
     List<uint16_t> _listValue;   // массив измерений
 
 public:
+    bool _flagStatus = false;    // Управляет запуском/остановкой процесса измерения
     float startVoltage = 0;
     uint16_t medianTime = 0;  // Медиана значений
     uint16_t minTime = 0;
@@ -46,7 +46,7 @@ public:
         minTime = 32767;
         digitalWrite(PIN_OUT, LOW); // Выкл. светодиод
         delay(250);
-        startVoltage = getVoltage() + 0.5f;
+        startVoltage = getVoltage();
         _flagStatus = true;
 
     }
@@ -66,7 +66,7 @@ public:
         if (!_flagMeasuring)
         {
             // Ждем, пока датчик зафиксирует состояние выкл. светодиода
-            if (getVoltage() > startVoltage)
+            if (getVoltage() > startVoltage + 0.3f)
                 return;
 
             _flagMeasuring = true;
@@ -76,8 +76,7 @@ public:
         // Ждем, сигнал от фотодатчика
         else
         {
-            float voltage = getVoltage();
-            if (voltage > startVoltage)
+            if (getVoltage() > startVoltage + 0.5f)
             { // Если сигнал поступил, то
                 count++;
                 valueTime = (micros() - _timer) / 1000; // Считаем задержку

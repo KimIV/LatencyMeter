@@ -2,17 +2,14 @@
 
 // Тайминги работы кнопки в миллисекундах
 #ifndef Button_deBounce
-#define Button_deBounce 15
+#define Button_deBounce 25
 #endif
 #ifndef Button_hold
 #define Button_hold 500
 #endif
-//#ifndef Button_long
-//#define Button_long 5000
-//#endif
-//#ifndef Button_idle
-//#define Button_idle 10000
-//#endif
+#ifndef Button_long
+#define Button_long 1500
+#endif
 
 class Button
 {
@@ -21,7 +18,6 @@ public:
   TEvent<> onClick;
   TEvent<> onClickLong;
   TEvent<> onClickLongDown;
-  TEvent<> onClickLongPulse;
   TEvent<> onKeyDown;
   TEvent<> onKeyUp;
 
@@ -31,53 +27,58 @@ public:
     _pin = pin;
     pinMode(_pin, INPUT_PULLUP);
   }
+
   /// @brief Основной цикл класса
   void Execute()
   {
     bool btnState = !digitalRead(_pin);
 
-    if (!btnState && _flag) // Кнопка отпущена
+    if (btnState && !_flag && !_flagHold)	// Нажатие кнопки
     {
-      uint32_t time = millis() - _timer;
-
-      if (_flagEvent) // Отпускание после долгого нажатия
-      {
-        onKeyUp();
-        onClickLongDown();
-        _flag = false;
-        _flagEvent = false;
-        return;
-      }
-      if (time > Button_deBounce && !_flagEvent)	// Клик
-      {
-        onKeyUp();
-        onClick();
-        _flag = false;
-        _flagEvent = false;
-        return;
-      }
+      onKeyDown();
+      _flag = true;
+      _timer = millis();
     }
 
     if(btnState && _flag)	// Удерживание кнопки
     {
       uint32_t time = millis() - _timer;
-      if (time > Button_hold)
-      {
-        if(_flagEvent)
-          onClickLongPulse();
-        else
-          onClickLong();
 
-        _flagEvent = true;
-        return;
+      if (time > Button_hold && !_flagHold && !_flagLong)
+      {
+        _flagHold = true;
+      }
+      if (time > Button_long && !_flagLong)
+      {
+        _flagHold = false;
+        _flagLong = true;
       }
     }
 
-    if (btnState && !_flag && !_flagEvent)	// Нажатие кнопки
+    if (!btnState && _flag) // Кнопка отпущена
     {
-      onKeyDown();
-      _flag = true;
-      _timer = millis();
+      uint32_t time = millis() - _timer;
+
+      if (time > Button_deBounce && !_flagHold && !_flagLong)  // Клик
+      {
+        onClick();
+        _flag = false;
+        return;
+      }
+      if (_flagHold) // Отпускание после долгого нажатия
+      {
+        onClickLong();
+        _flag = false;
+        _flagHold = false;
+        return;
+      }
+      if (_flagLong) // Отпускание после долгого удержания
+      {
+        onClickLongDown();
+        _flag = false;
+        _flagLong = false;
+        return;
+      }
     }
   }
 
@@ -85,5 +86,6 @@ private:
   byte _pin;
   uint32_t _timer = 0;
   bool _flag = false;		// флаг Кнопка нажата
-  bool _flagEvent = false;	// флаг Произошло событие, ждать исходное состояние кнопки
+  bool _flagHold = false;	// флаг Произошло событие - удерживание кнопки
+  bool _flagLong = false;	// флаг Произошло событие - долгое удерживание кнопки
 };

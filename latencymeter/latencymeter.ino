@@ -70,10 +70,13 @@ public:
     
     OnUpdateData();
   }
+  void OnBtnLongClick()
+  {
+    latencyMeter->_flagStatus = !latencyMeter->_flagStatus;
+  }
   void OnBtnReset()
   {
     latencyMeter->Start();
-    // asm volatile("jmp 0x00"); // Перезагрузка
   }
 };
 EventHandler eventHandler;
@@ -87,9 +90,8 @@ void setup()
   latencyMeter->onUpdate += METHOD_HANDLER(eventHandler, EventHandler::OnUpdateData);
 
   button1.onClick += METHOD_HANDLER(eventHandler, EventHandler::OnBtnClick);
-  button1.onClickLong += METHOD_HANDLER(eventHandler, EventHandler::OnBtnReset);
-
-  //latencyMeter->Start();
+  button1.onClickLong += METHOD_HANDLER(eventHandler, EventHandler::OnBtnLongClick);
+  button1.onClickLongDown += METHOD_HANDLER(eventHandler, EventHandler::OnBtnReset);
 }
 
 void loop()
