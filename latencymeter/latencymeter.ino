@@ -19,13 +19,14 @@
 #include "Led_5461AS_180.h"
 #endif
 #include "Button.h"
+bool _flagClear = false;    // Для мигания в режиме Стоп измерения.
 #include "LatencyMeter.h"
 
 Led_5461AS *led;
 LatencyMeter *latencyMeter;
 Button button1(PIN_BUTTON);
 
-uint8_t flagTypeDataOut = 4; // 0 - задержка реал-тайм, 1 - минимальная, 2 - максимальная, 3 - медиана, 4 - кол-во измерений
+uint8_t flagTypeDataOut = 4;  // 0 - задержка реал-тайм, 1 - минимальная, 2 - максимальная, 3 - медиана, 4 - кол-во измерений
 
 class EventHandler
 {
@@ -60,8 +61,12 @@ public:
       break;
     }
     strcat(str, buf);
-    led->Set(str); // вывод на экран
+
+    // вывод на экран
+    if (_flagClear) led->Set("");
+    else led->Set(str);
   }
+
   void OnBtnClick()
   {
     flagTypeDataOut++;
@@ -70,12 +75,16 @@ public:
     
     OnUpdateData();
   }
+
   void OnBtnLongClick()
   {
+    _flagClear = false;
     latencyMeter->_flagStatus = !latencyMeter->_flagStatus;
   }
+
   void OnBtnReset()
   {
+    _flagClear = false;
     latencyMeter->Start();
   }
 };

@@ -10,6 +10,7 @@
 class LatencyMeter
 {
     uint32_t _timer = 0;         // Переменная таймера
+    uint32_t _timerClear = 0;    // Переменная таймера для мигания в режиме Стоп
     bool _flagMeasuring = false; // когда true, то идет процесс измерения
     List<uint16_t> _listValue;   // массив измерений
 
@@ -60,7 +61,16 @@ public:
     /// @brief Выполняет измерение
     void Execute()
     {
-        if (!_flagStatus) return;
+        if (!_flagStatus)
+        {
+          if (millis() - _timerClear > 250)
+          {
+            _flagClear = !_flagClear;
+            _timerClear = millis();
+            onUpdate();
+          }
+          return;
+        }
 
         if (!_flagMeasuring)
         {
