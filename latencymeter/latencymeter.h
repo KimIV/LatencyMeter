@@ -63,6 +63,7 @@ public:
     {
         if (!_flagStatus)
         {
+          digitalWrite(PIN_OUT, LOW); // Выкл. светодиод при остановке измерений
           if (millis() - _timerClear > 250)
           {
             _flagClear = !_flagClear;
@@ -75,7 +76,7 @@ public:
         if (!_flagMeasuring)
         {
             // Ждем, пока датчик зафиксирует состояние выкл. светодиода
-            if (getVoltage() > startVoltage + 0.3f)
+            if (getVoltage() > startVoltage + 0.2f)
                 return;
 
             _flagMeasuring = true;
